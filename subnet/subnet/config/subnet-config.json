@@ -1,0 +1,13 @@
+{
+  "vm": "SubnetEVM",
+  "subnetId": 1,
+  "tokenSymbol": "Monad",
+  "gasFee": {
+    "lowDiskUse": true,
+    "lowThroughput": true
+  },
+  "airdrop": {
+    "enabled": false,
+    "amount": 0
+  }
+}

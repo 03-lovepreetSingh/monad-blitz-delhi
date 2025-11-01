@@ -1,126 +1,52 @@
-# LearnFast API
+# openwave
 
-The LearnFast API is a backend service designed to help users create and manage personalized learning schedules from YouTube playlists. It allows users to generate schedules based on either the number of hours they want to study per day or a target number of days to complete the playlist.
+- **GitHub Integration:** Authenticate with GitHub, list your repositories, select issues, view collaborators, and manage pull requests.
+- **Smart Contract Funding:** Project owners can deposit cryptocurrency into a dedicated smart contract to fund specific tasks.
+- **Crypto Rewards:** Contributors receive cryptocurrency rewards directly to their wallets upon successful merging of their pull requests by the project owner.
+- **Web3 Wallet Connection:** Integrates with browser wallets like MetaMask for seamless deposit and withdrawal operations.
+- **Project & Issue Management:** Create detailed project listings, link them to GitHub repositories and specific issues, and track contributions.
+- **AI-Powered Descriptions:** Automatically generates project descriptions using AI based on the repository's README content.
+- **S3 Image Storage:** Project images are uploaded and stored securely using AWS S3 and other s3 providers.
 
-## Features
+## How It Works
 
--   **Dynamic Schedule Generation:** Create learning schedules from any public YouTube playlist.
--   **Two Scheduling Strategies:**
-    -   **Time-Based:** Specify the number of hours to study each day.
-    -   **Day-Based:** Specify the total number of days to complete the playlist.
--   **Progress Tracking:** Mark videos as complete and track your progress.
--   **Schedule Adjustment:** Adjust your daily study hours for an existing schedule.
--   **User-Specific Schedules:** Manages schedules on a per-user basis.
--   **RESTful API:** A clear and easy-to-use API for all functionalities.
+1.  **Project Creation:** Project owners connect their GitHub account and Web3 wallet. They create a project listing on openwave, selecting a repository, an issue, and setting a reward amount.Just for testing
+2.  **Funding:** The owner deposits the specified reward amount into the project's associated smart contract.
+3.  **Contribution:** Developers browse listed projects/issues. They can apply to work on an issue (feature might exist or be planned).
+4.  **Development & PR:** The contributor works on the issue and submits a Pull Request on GitHub.
+5.  **Review & Merge:** The project owner reviews the PR via the openwave interface.
+6.  **Reward Payout:** Upon deciding to merge, the owner triggers a function that first attempts to withdraw the reward from the smart contract to the contributor's (or owner's, based on current implementation) wallet. If successful, the PR is merged on GitHub, and the transaction is recorded.
+
+## Technology Stack
+
+- **Frontend:** Next.js, React, TypeScript, Tailwind CSS
+- **Blockchain Interaction:** Ethers.js
+- **GitHub API:** Octokit.js
+- **Authentication:** NextAuth.js (with GitHub Provider)
+- **AI:** Groq SDK (using models like Llama)
+- **File Storage:** AWS S3 (via pre-signed URLs)
+- **Backend:** Next.js API Routes
 
 ## Getting Started
-
-Follow these instructions to get the LearnFast API server running on your local machine for development and testing purposes.
-
-### Prerequisites
-
--   Python 3.8+
--   Pip (Python package installer)
--   MongoDB account and a database
--   Google API Key with YouTube Data API v3 enabled
-
-### Installation
 
 1.  **Clone the repository:**
     ```bash
     git clone <repository-url>
-    cd learnfast-backend
+    cd openwave
     ```
-
-2.  **Create a virtual environment:**
+2.  **Install dependencies:**
     ```bash
-    python -m venv venv
-    source venv/bin/activate  # On Windows, use `venv\Scripts\activate`
+    npm install
+    # or
+    yarn install
     ```
-
-3.  **Install the dependencies:**
+3.  **Set up environment variables:** Create a `.env.local` file and add necessary variables (GitHub credentials, S3 keys, Groq API key, Smart Contract address, Network details, etc. - _Specific variables need documentation_).
+4.  **Run the development server once**
     ```bash
-    pip install -r requirements.txt
+    bun run dev
+    # or
+    yarn dev
     ```
+5.  Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-### Configuration
-
-1.  Create a `.env` file in the root directory of the project.
-2.  Add the following environment variables to the `.env` file:
-
-    ```env
-    MONGODB_URI="your_mongodb_connection_string"
-    DB_NAME="your_database_name"
-    GOOGLE_API_KEY="your_google_api_key"
-    ```
-
-    -   `MONGODB_URI`: Your connection string for the MongoDB database.
-    -   `DB_NAME`: The name of the database to use.
-    -   `GOOGLE_API_KEY`: Your API key from the Google Cloud Platform console.
-
-### Running the Server
-
-Start the Flask development server with the following command:
-
-```bash
-python app.py
-```
-
-The server will start on `http://127.0.0.1:5000`.
-
-## API Endpoints
-
-Here is a summary of the available API endpoints.
-
-| Method | Endpoint                                       | Description                                      |
-| :----- | :--------------------------------------------- | :----------------------------------------------- |
-| `POST` | `/api/schedule`                                | Creates a new learning schedule.                 |
-| `GET` | `/api/schedules/<user_id>`                     | Retrieves all schedules for a specific user.     |
-| `GET` | `/api/schedules/detail/<schedule_id>`          | Retrieves the detailed information for a schedule. |
-| `PUT` | `/api/schedules/<schedule_id>/progress`        | Updates the completion status of a video.        |
-| `POST` | `/api/schedules/<schedule_id>/adjust`          | Adjusts the daily hours for a schedule.          |
-| `DELETE` | `/api/schedules/<schedule_id>`                 | Deletes a schedule.                              |
-| `GET` | `/api/health`                                  | Checks the health of the API and its services.   |
-
-### Create Schedule (`POST /api/schedule`)
-
-**Request Body (Time-Based):**
-
-```json
-{
-  "userId": "your_user_id",
-  "playlistUrl": "youtube_playlist_url",
-  "scheduleType": "daily",
-  "dailyHours": 1.5,
-  "title": "My Daily Learning Schedule"
-}
-```
-
-**Request Body (Day-Based):**
-
-```json
-{
-  "userId": "your_user_id",
-  "playlistUrl": "youtube_playlist_url",
-  "scheduleType": "day-based",
-  "targetDays": 10,
-  "title": "My 10-Day Learning Plan"
-}
-```
-
-## Postman Collections
-
-To help with testing, two Postman collection files are included in the `postman/` directory:
-
--   [`create_schedule.json`](postman/create_schedule.json): For creating a `daily` (time-based) schedule.
--   [`create_schedule_day_based.json`](postman/create_schedule_day_based.json): For creating a `day-based` schedule.
-
-You can import these files into Postman. Remember to set up a `base_url` environment variable in Postman pointing to your running server (e.g., `http://127.0.0.1:5000`).
-
-## Technologies Used
-
--   **Flask:** A lightweight WSGI web application framework in Python.
--   **MongoDB:** A NoSQL database for storing schedule data.
--   **Pymongo:** The official Python driver for MongoDB.
--   **Google API Python Client:** To interact with the YouTube Data API.
--   **python-dotenv:** For managing environment variables.
+_(Note: You'll need a configured Web3 wallet like MetaMask connected to the appropriate network (e.g., Monad, Educhain Testnet) and funded with test ETH for contract interactions.)_
