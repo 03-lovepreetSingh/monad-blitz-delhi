@@ -25,27 +25,6 @@ export const MonadTestnet = {
   },
 };
 
-export const avalancheTestnet = {
-  id: 43113,
-  name: "Avalanche Fuji C-Chain",
-  chainNamespace: "eip155",
-  nativeCurrency: { name: "Monad", symbol: "Monad", decimals: 18 },
-  rpcUrls: {
-    default: {
-      http: ["https://api.Monad-test.network/ext/bc/C/rpc"],
-    },
-    public: {
-      http: ["https://api.Monad-test.network/ext/bc/C/rpc"],
-    },
-  },
-  blockExplorers: {
-    default: {
-      name: "Avalanche Testnet Scan",
-      url: "https://subnets-test.Monad.network/c-chain",
-    },
-  },
-};
-
 export const monadTestnet = {
   id: 10143,
   name: "Monad Testnet",
@@ -67,7 +46,7 @@ export const monadTestnet = {
   },
 };
 
-export const networks = [MonadTestnet, avalancheTestnet, monadTestnet];
+export const networks = [MonadTestnet, monadTestnet];
 
 // Set up the Wagmi Adapter (Config)
 export const wagmiAdapter = new WagmiAdapter({
